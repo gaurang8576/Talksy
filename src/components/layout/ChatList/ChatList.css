@@ -1,0 +1,144 @@
+.chatlist-container {
+  width: var(--chatlist-width);
+  background-color: var(--bg-secondary);
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--divider);
+  padding: var(--spacing-md);
+  overflow-y: auto;
+}
+
+.chatlist-header {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: var(--spacing-md);
+  margin-top: var(--spacing-sm);
+}
+
+.chatlist-search-container {
+  background-color: var(--bg-primary);
+  margin-bottom: var(--spacing-md);
+  border-radius: 20px;
+}
+
+.chatlist-tabs {
+  display: flex;
+  background-color: var(--bg-primary);
+  border-radius: 20px;
+  padding: 4px;
+  margin-bottom: var(--spacing-md);
+  gap: 4px;
+}
+
+.chatlist-tab {
+  flex: 1;
+  text-align: center;
+  padding: 6px 12px;
+  border-radius: 16px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  transition: 0.2s;
+  color: var(--text-secondary);
+}
+
+.chatlist-tab.active {
+  background-color: #2A2A2A; /* darker grey */
+  color: var(--text-primary);
+}
+
+.chatlist-section {
+  margin-bottom: var(--spacing-xl);
+}
+
+.chatlist-section-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: var(--spacing-sm);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chatlist-item {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border-radius: 12px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  background-color: var(--bg-primary);
+  transition: 0.2s;
+  position: relative;
+}
+
+.chatlist-item.active-chat {
+  background-color: var(--bg-secondary);
+}
+
+.avatar-wrapper {
+  position: relative;
+  margin-right: 12px;
+}
+
+.chatlist-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+.status-dot {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  background-color: #00FF00;
+  border-radius: 50%;
+  border: 2px solid var(--bg-primary);
+}
+
+.chatlist-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.chatlist-name {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chatlist-msg {
+  font-size: 12px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chatlist-green-text {
+  color: var(--accent-primary);
+  font-weight: 500;
+}
+
+.chatlist-badge {
+  background-color: var(--accent-primary);
+  color: var(--bg-primary);
+  font-size: 10px;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 10px;
+  margin-left: auto;
+}
+
+.chatlist-call-icons {
+  display: flex;
+  gap: 8px;
+  color: var(--text-secondary);
+}

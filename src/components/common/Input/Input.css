@@ -1,0 +1,24 @@
+.input-container {
+  display: flex;
+  align-items: center;
+  background-color: var(--bg-primary);
+  border-radius: var(--border-radius-xl);
+  padding: 8px 16px;
+  border: 1px solid var(--divider);
+}
+
+.input-icon {
+  color: var(--text-muted);
+  margin-right: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.input-field {
+  background-color: transparent;
+  border: none;
+  color: var(--text-primary);
+  outline: none;
+  width: 100%;
+  font-family: var(--font-family);
+}
