@@ -1,7 +1,19 @@
 .message-bubble-container {
   display: flex;
-  margin-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
   width: 100%;
+  animation: slideUpFade 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes slideUpFade {
+  0% { 
+    opacity: 0; 
+    transform: translateY(15px); 
+  }
+  100% { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
 }
 
 .message-bubble-container.own {
@@ -19,13 +31,16 @@
 }
 
 .message-bubble {
-  max-width: 65%;
+  max-width: 400px;
   padding: 12px 16px;
   border-radius: var(--border-radius-xl);
   font-size: 14px;
   line-height: 1.4;
   color: var(--text-primary);
-  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  word-wrap: break-word;
+  word-break: break-word;
+  /* Ensures extremely long strings without spaces wrap gracefully */
 }
 
 .message-bubble.own {
@@ -43,4 +58,12 @@
   height: 32px;
   border-radius: 50%;
   object-fit: cover;
+}
+
+.message-sender-name {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent-primary);
+  margin-bottom: 2px;
 }

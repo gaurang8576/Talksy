@@ -1,38 +1,70 @@
 import React from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Home, Search, Bookmark, Share2, Settings, Sun, Moon } from 'lucide-react';
+import talksy_logo from '../../../assets/images/talksy_logo.png';
 import './Sidebar.css';
 
-const Sidebar = () => {
+const Sidebar = ({ onHomeClick, theme, setTheme }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleHomeClick = () => {
+    navigate('/');
+    if (onHomeClick) {
+      onHomeClick();
+    }
+  };
+
+  const handleSettingsClick = () => {
+    navigate('/settings');
+  };
+
   return (
     <div className="sidebar">
       <div className="sidebar-logo">
-        <svg fill="currentColor" width="32" height="32" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9v-2h2v2zm0-4H9V7h2v5z" /></svg>
+        <img src={talksy_logo} alt="Talksy Logo" className="sidebar-logo-img" />
       </div>
 
-      <div className="sidebar-nav-item active">
+      <div
+        className={`sidebar-nav-item ${location.pathname === '/' ? 'active' : ''}`}
+        onClick={handleHomeClick}
+      >
         <Home size={24} />
         <span>Home</span>
       </div>
-      <div className="sidebar-nav-item">
+      {/* <div className="sidebar-nav-item">
         <Search size={24} />
         <span>Search</span>
-      </div>
+      </div> */}
       {/* <div className="sidebar-nav-item">
         <Bookmark size={24} />
         <span>Save</span>
       </div> */}
-      <div className="sidebar-nav-item">
+      {/* <div className="sidebar-nav-item">
         <Share2 size={24} />
         <span>Share</span>
-      </div>
-      <div className="sidebar-nav-item">
+      </div> */}
+      <div
+        className={`sidebar-nav-item ${location.pathname === '/settings' ? 'active' : ''}`}
+        onClick={handleSettingsClick}
+      >
         <Settings size={24} />
         <span>Setting</span>
       </div>
 
       <div className="sidebar-theme-toggle">
-        <div className="theme-btn active"><Sun size={18} /></div>
-        <div className="theme-btn"><Moon size={18} /></div>
+        <div 
+          className={`theme-btn ${theme === 'light' ? 'active' : ''}`}
+          onClick={() => setTheme && setTheme('light')}
+        >
+          <Sun size={18} />
+        </div>
+        <div 
+          className={`theme-btn ${theme === 'dark' ? 'active' : ''}`}
+          onClick={() => setTheme && setTheme('dark')}
+        >
+          <Moon size={18} />
+        </div>
       </div>
 
       <img src="https://i.pravatar.cc/150?u=1" alt="Profile" className="sidebar-avatar" />

@@ -1,22 +1,74 @@
-import React from 'react';
-import { Paperclip, Smile, Camera, Mic } from 'lucide-react';
+import React, { useRef, useState } from 'react';
+import { Smile, Camera, X, FileText } from 'lucide-react';
+import { SendIcon as Send, PaperClipIcon as PaperClip, MicIcon as Mic } from '../../common/Icons/ChatWindow';
 import './MessageInput.css';
 
 const MessageInput = () => {
+  const fileInputRef = useRef(null);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(null);
+
+  const handleFileClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedFile(file);
+      if (file.type.startsWith('image/')) {
+        const url = URL.createObjectURL(file);
+        setPreviewUrl(url);
+      } else {
+        setPreviewUrl(null);
+      }
+    }
+  };
+
+  const clearFile = () => {
+    setSelectedFile(null);
+    setPreviewUrl(null);
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
   return (
-    <div className="message-input-container">
-      <div className="message-input-wrapper">
-        <div className="message-icon-btn"><Smile size={20} /></div>
+    <div className="message-outer-container">
+      {selectedFile && (
+        <div className="file-preview-area">
+          <div className="preview-card">
+            {previewUrl ? (
+              <img src={previewUrl} alt="preview" className="file-preview-img" />
+            ) : (
+              <div className="file-preview-icon">
+                <FileText size={24} />
+                <span className="file-name-text">{selectedFile.name}</span>
+              </div>
+            )}
+            <button className="preview-clear-btn" onClick={clearFile}>
+              <X size={14} />
+            </button>
+          </div>
+        </div>
+      )}
+      <div className="message-input-container">
         <input 
-          className="message-input-field" 
-          placeholder="Message........." 
+          type="file" 
+          ref={fileInputRef} 
+          style={{ display: 'none' }} 
+          onChange={handleFileChange}
         />
-        <div className="message-icon-btn"><Paperclip size={20} /></div>
-        <div className="message-icon-btn"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23AAAAAA' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4'/%3E%3Cpolyline points='17 8 12 3 7 8'/%3E%3Cline x1='12' y1='3' x2='12' y2='15'/%3E%3C/svg%3E" alt="folder" style={{width: 20}} /></div>
-        <div className="message-icon-btn"><Camera size={20} /></div>
-      </div>
-      <div className="message-mic-btn">
-        <Mic size={20} />
+        <div className="message-input-wrapper">
+          <div className="message-icon-btn"><Smile size={20} /></div>
+          <input 
+            className="message-input-field" 
+            placeholder="Message here something" 
+          />
+          <div className="message-icon-btn" onClick={handleFileClick}><PaperClip size={20} /></div>
+          <div className="message-icon-btn"><Mic size={20} /></div>
+          <div className="message-icon-btn"><Camera size={20} /></div>
+        </div>
+        <div className="message-send-btn">
+          <Send size={20} />
+        </div>
       </div>
     </div>
   );

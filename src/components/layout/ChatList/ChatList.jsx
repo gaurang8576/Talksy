@@ -1,24 +1,23 @@
 import React, { useState } from 'react';
-import { Search, Pin, Video, Phone } from 'lucide-react';
+import { Search, Video, Phone, ChevronDown, ChevronUp } from 'lucide-react';
 import Input from '../../common/Input/Input';
+import { chats, calls } from '../../../data/data';
 import './ChatList.css';
 
 const ChatList = ({ onChatSelect, activeChatId }) => {
   const [activeTab, setActiveTab] = useState('All Chats');
+  const [showAllChats, setShowAllChats] = useState(false);
+  const [showAllCalls, setShowAllCalls] = useState(false);
 
-  const chats = [
-    { id: 1, name: 'Figma Teams', msg: 'Typing.......', time: '2', unread: 2, isTyping: true, pinned: true, avatar: 'https://i.pravatar.cc/150?u=figma' },
-    { id: 2, name: 'Darshan Zalavadiya', msg: 'Good', time: '', unread: 0, isTyping: false, avatar: 'https://i.pravatar.cc/150?u=darshan' },
-    { id: 3, name: 'School App Client', msg: 'Good Work', time: '', unread: 0, isTyping: false, avatar: 'https://i.pravatar.cc/150?u=school' },
-    { id: 4, name: 'Ui/UX Teams', msg: 'I have done my work 👍', time: '', unread: 0, isTyping: false, avatar: 'https://i.pravatar.cc/150?u=ux' },
-  ];
+  const filteredChats = chats.filter(chat => {
+    if (activeTab === 'Groups') return chat.isGroup;
+    if (activeTab === 'Contacts') return !chat.isGroup;
+    return true; // 'All Chats'
+  });
 
-  const calls = [
-    { id: 1, name: 'Friends', status: 'Joni is Talking....', time: '', avatar: 'https://i.pravatar.cc/150?u=friends', talking: true },
-    { id: 2, name: 'Darshan Zalavadiya', status: '30 min ago', time: '', avatar: 'https://i.pravatar.cc/150?u=darshan', talking: false },
-    { id: 3, name: 'School App Client', status: 'Yesterday', time: '', avatar: 'https://i.pravatar.cc/150?u=school', talking: false },
-    { id: 4, name: 'Ui/UX Teams', status: 'Last Week', time: '', avatar: 'https://i.pravatar.cc/150?u=ux', talking: false },
-  ];
+  const displayedChats = showAllChats ? filteredChats : filteredChats.slice(0, 5);
+
+  const displayedCalls = showAllCalls ? calls : calls.slice(0, 5);
 
   return (
     <div className="chatlist-container">
@@ -44,7 +43,7 @@ const ChatList = ({ onChatSelect, activeChatId }) => {
       </div>
 
       <div className="chatlist-section">
-        {chats.map(chat => (
+        {displayedChats.map(chat => (
           <div 
             key={chat.id} 
             className={`chatlist-item ${activeChatId === chat.id ? 'active-chat' : ''}`}
@@ -58,18 +57,24 @@ const ChatList = ({ onChatSelect, activeChatId }) => {
              <div className="chatlist-name">{chat.name}</div>
              <div className={`chatlist-msg ${chat.isTyping ? 'chatlist-green-text' : ''}`}>{chat.msg}</div>
            </div>
-           {chat.pinned && <Pin size={14} color="var(--accent-primary)" style={{position:'absolute', top: 12, right: 12}} />}
-           {chat.unread > 0 && <span className="chatlist-badge">{chat.unread}</span>}
           </div>
         ))}
+        {filteredChats.length > 5 && (
+          <div 
+            className="chatlist-item chatlist-expand-btn" 
+            onClick={() => setShowAllChats(!showAllChats)}
+          >
+            {showAllChats ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
+          </div>
+        )}
       </div>
 
       <div className="chatlist-section">
         <div className="chatlist-section-title">
           Calls
-          <div className="chatlist-green-text" style={{fontSize: '12px', cursor: 'pointer'}}>⊕ New Meet</div>
+          <div className="chatlist-green-text chatlist-new-meet">⊕ New Meet</div>
         </div>
-        {calls.map(call => (
+        {displayedCalls.map(call => (
           <div 
             key={call.id} 
             className={`chatlist-item ${activeChatId === call.id ? 'active-chat' : ''}`}
@@ -89,6 +94,14 @@ const ChatList = ({ onChatSelect, activeChatId }) => {
             </div>
           </div>
         ))}
+        {calls.length > 5 && (
+          <div 
+            className="chatlist-item chatlist-expand-btn" 
+            onClick={() => setShowAllCalls(!showAllCalls)}
+          >
+            {showAllCalls ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
+          </div>
+        )}
       </div>
     </div>
   );

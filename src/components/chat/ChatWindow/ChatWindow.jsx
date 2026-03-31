@@ -2,24 +2,16 @@ import React from 'react';
 import { Video, Phone } from 'lucide-react';
 import MessageBubble from '../MessageBubble/MessageBubble';
 import MessageInput from '../MessageInput/MessageInput';
+import { messageDatabase } from '../../../data/mesasedatabase';
 import './ChatWindow.css';
 
 const ChatWindow = ({ activeChat }) => {
-  const activeUser = {
-    name: 'Darshan Zalavadiya',
-    status: 'Online',
-    avatar: 'https://i.pravatar.cc/150?u=darshan'
-  };
 
-  const messages = [
-    { id: 1, text: 'Hello, Darshan', isOwn: true },
-    { id: 2, text: 'Hello', isOwn: false, avatar: activeUser.avatar },
-    { id: 3, text: 'How are you', isOwn: true },
-    { id: 4, text: 'I am good', isOwn: false, avatar: activeUser.avatar },
-    { id: 5, text: 'What about You', isOwn: false, avatar: activeUser.avatar },
-    { id: 6, text: 'Same for this side', isOwn: true },
-    { id: 7, text: 'Good', isOwn: false, avatar: activeChat?.avatar },
-  ];
+  // Default to an empty array or generic greeting if no specific messages are mapped
+  const messages = activeChat ? (messageDatabase[activeChat.name] || [
+    { id: 1, text: `Hey ${activeChat.name}, what's up?`, isOwn: true },
+    { id: 2, text: 'Not much, just checking out this chat app.', isOwn: false, avatar: activeChat?.avatar },
+  ]) : [];
 
   if (!activeChat) {
     return (
@@ -50,7 +42,11 @@ const ChatWindow = ({ activeChat }) => {
       <div className="chat-messages-area chat-pattern-bg">
         <div className="chat-date-divider">Today, 9:30 am</div>
         {messages.map(msg => (
-          <MessageBubble key={msg.id} message={msg} isOwn={msg.isOwn} />
+          <MessageBubble
+            key={msg.id}
+            message={{ ...msg, avatar: msg.avatar || activeChat?.avatar }}
+            isOwn={msg.isOwn}
+          />
         ))}
       </div>
 

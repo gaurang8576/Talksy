@@ -43,8 +43,8 @@
 }
 
 .chatlist-tab.active {
-  background-color: #2A2A2A; /* darker grey */
-  color: var(--text-primary);
+  background-color: #2A2A2A;
+  color: #FFFFFF;
 }
 
 .chatlist-section {
@@ -68,12 +68,23 @@
   margin-bottom: 8px;
   cursor: pointer;
   background-color: var(--bg-primary);
-  transition: 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
+  border: 1px solid transparent;
+}
+
+.chatlist-item:hover {
+  background-color: var(--bg-secondary);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  border-color: rgba(255, 255, 255, 0.05);
 }
 
 .chatlist-item.active-chat {
   background-color: var(--bg-secondary);
+  border-left: 4px solid var(--accent-primary);
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
 }
 
 .avatar-wrapper {
@@ -141,4 +152,23 @@
   display: flex;
   gap: 8px;
   color: var(--text-secondary);
+}
+
+.chatlist-pin-icon {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+
+.chatlist-expand-btn {
+  justify-content: center;
+  color: var(--text-secondary) !important;
+  background-color: transparent !important;
+  padding: 8px;
+  box-shadow: none !important;
+}
+
+.chatlist-new-meet {
+  font-size: 12px;
+  cursor: pointer;
 }
