@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Sidebar from "../../components/layout/Sidebar/Sidebar";
 import "./Auth.css";
 
 export default function Login({ onLogin }) {
@@ -64,17 +65,9 @@ export default function Login({ onLogin }) {
 
   return (
     <div className="auth-page">
+      <Sidebar isAuth={true} />
       {/* Main */}
       <main className="auth-main">
-        <nav className="auth-nav">
-          <a href="#">About</a>
-          <a href="#">Support</a>
-          <button className="theme-toggle" title="Toggle theme">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-            </svg>
-          </button>
-        </nav>
 
         <div className="auth-content">
           <div className="auth-header">

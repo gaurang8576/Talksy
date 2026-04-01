@@ -48,7 +48,9 @@ body {
 
 /* ── Sidebar ── */
 .auth-sidebar {
-  display: none;
+  width: var(--sidebar-width);
+  height: 100vh;
+  flex-shrink: 0;
 }
 
 .sidebar-bottom {

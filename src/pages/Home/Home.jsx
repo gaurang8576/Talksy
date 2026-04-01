@@ -4,12 +4,12 @@ import ChatList from '../../components/layout/ChatList/ChatList';
 import ChatWindow from '../../components/chat/ChatWindow/ChatWindow';
 import './Home.css';
 
-const Home = ({ theme, setTheme, onLogout }) => {
+const Home = ({ onLogout }) => {
   const [activeChat, setActiveChat] = useState(null);
 
   return (
     <div className="home-container">
-      <Sidebar onHomeClick={() => setActiveChat(null)} theme={theme} setTheme={setTheme} onLogout={onLogout} />
+      <Sidebar onHomeClick={() => setActiveChat(null)} onLogout={onLogout} />
       <ChatList onChatSelect={setActiveChat} activeChatId={activeChat?.id} />
       <ChatWindow activeChat={activeChat} />
     </div>

@@ -134,3 +134,137 @@
   transform: scale(1.05);
   filter: brightness(1.1);
 }
+
+.emoji-picker-wrapper {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 0;
+  width: 100%;
+  max-width: 350px;
+  z-index: 1000;
+  animation: slideUpFade 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.message-icon-btn.active {
+  color: var(--accent-primary);
+  transform: scale(1.1);
+}
+
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Custom styles for the picker itself to match app aesthetics */
+.EmojiPickerReact {
+  --epr-bg-color: var(--bg-secondary) !important;
+  --epr-category-label-bg-color: var(--bg-secondary) !important;
+  --epr-text-color: var(--text-primary) !important;
+  --epr-search-input-bg-color: var(--bg-primary) !important;
+  --epr-hover-bg-color: var(--bg-primary) !important;
+  --epr-focus-bg-color: var(--bg-primary) !important;
+  --epr-highlight-color: var(--accent-primary) !important;
+  border: 1px solid var(--divider) !important;
+}
+
+/* Recording UI Styles */
+.video-recording-preview {
+  position: absolute;
+  bottom: calc(100% + 20px);
+  right: 20px;
+  width: 280px;
+  background-color: var(--bg-secondary);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  border: 2px solid var(--accent-primary);
+  z-index: 1000;
+  animation: slideUpFade 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.live-video-preview {
+  width: 100%;
+  height: auto;
+  display: block;
+  background-color: #000;
+}
+
+.video-recording-timer {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.audio-recording-indicator {
+  padding: 10px 20px;
+  background-color: var(--bg-secondary);
+  border-top: 1px solid var(--divider);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  animation: slideUpFade 0.3s ease;
+}
+
+.recording-pulse {
+  width: 12px;
+  height: 12px;
+  background-color: #ff4444;
+  border-radius: 50%;
+  animation: pulse 1.5s infinite;
+}
+
+.audio-recording-timer {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  flex: 1;
+}
+
+.stop-recording-btn {
+  background-color: #ff4444;
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.stop-recording-btn:hover {
+  background-color: #cc0000;
+  transform: scale(1.05);
+}
+
+.recording-active-status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  color: var(--text-secondary);
+  font-style: italic;
+  font-size: 13px;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 68, 68, 0.7); }
+  70% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(255, 68, 68, 0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 68, 68, 0); }
+}
