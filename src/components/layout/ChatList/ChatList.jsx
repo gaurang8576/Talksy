@@ -4,20 +4,30 @@ import Input from '../../common/Input/Input';
 import { chats, calls } from '../../../data/data';
 import './ChatList.css';
 
-const ChatList = ({ onChatSelect, activeChatId }) => {
+const  ChatList = ({ onChatSelect, activeChatId }) => {
   const [activeTab, setActiveTab] = useState('All Chats');
   const [showAllChats, setShowAllChats] = useState(false);
   const [showAllCalls, setShowAllCalls] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const filteredChats = chats.filter(chat => {
-    if (activeTab === 'Groups') return chat.isGroup;
-    if (activeTab === 'Contacts') return !chat.isGroup;
-    return true; // 'All Chats'
+    const matchesTab = 
+      activeTab === 'Groups' ? chat.isGroup :
+      activeTab === 'Contacts' ? !chat.isGroup :
+      true;
+    
+    const matchesSearch = chat.name.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    return matchesTab && matchesSearch;
   });
+
+  const filteredCalls = calls.filter(call => 
+    call.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   const displayedChats = showAllChats ? filteredChats : filteredChats.slice(0, 5);
 
-  const displayedCalls = showAllCalls ? calls : calls.slice(0, 5);
+  const displayedCalls = showAllCalls ? filteredCalls : filteredCalls.slice(0, 5);
 
   return (
     <div className="chatlist-container">
@@ -26,6 +36,8 @@ const ChatList = ({ onChatSelect, activeChatId }) => {
         placeholder="Search......"
         containerStyle={{}}
         className="chatlist-search-container"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
       />
       
       <div className="chatlist-header">Message</div>

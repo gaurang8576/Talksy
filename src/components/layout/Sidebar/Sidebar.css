@@ -26,15 +26,52 @@
   color: var(--text-secondary);
   cursor: pointer;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 4px;
-  font-size: 10px;
+  justify-content: center;
   width: 48px;
   height: 48px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   background-color: transparent;
-  justify-content: center;
+  position: relative;
+}
+
+.sidebar-nav-item span {
+  position: absolute;
+  left: 60px;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-10px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  pointer-events: none;
+  z-index: 100;
+  border: 1px solid var(--divider);
+}
+
+.sidebar-nav-item:hover span {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+}
+
+.sidebar-nav-item span::before {
+  content: '';
+  position: absolute;
+  left: -5px;
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+  width: 10px;
+  height: 10px;
+  background-color: var(--bg-secondary);
+  border-left: 1px solid var(--divider);
+  border-bottom: 1px solid var(--divider);
 }
 
 .sidebar-nav-item:hover {

@@ -10,7 +10,7 @@ import {
 import Sidebar from '../../components/layout/Sidebar/Sidebar';
 import './Settings.css';
 
-const Settings = ({ theme, setTheme }) => {
+const Settings = () => {
   const options = [
     { id: 'notifications', icon: <Bell size={24} />, text: 'Notifications' },
     { id: 'privacy', icon: <Lock size={24} />, text: 'Privacy & Security' },
@@ -21,7 +21,7 @@ const Settings = ({ theme, setTheme }) => {
 
   return (
     <div className="settings-container">
-      <Sidebar theme={theme} setTheme={setTheme} />
+      <Sidebar />
       <div className="settings-content-wrapper">
         <div className="settings-panel">
           <h1 className="settings-header">Settings</h1>
