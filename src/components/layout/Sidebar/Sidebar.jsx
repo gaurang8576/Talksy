@@ -1,10 +1,10 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Home, Search, Bookmark, Share2, Settings, Sun, Moon } from 'lucide-react';
+import { Home, Search, Bookmark, Share2, Settings, Sun, Moon, LogOut } from 'lucide-react';
 import talksy_logo from '../../../assets/images/talksy_logo.png';
 import './Sidebar.css';
 
-const Sidebar = ({ onHomeClick, theme, setTheme }) => {
+const Sidebar = ({ onHomeClick, theme, setTheme, onLogout }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -17,6 +17,13 @@ const Sidebar = ({ onHomeClick, theme, setTheme }) => {
 
   const handleSettingsClick = () => {
     navigate('/settings');
+  };
+
+  const handleLogout = () => {
+    if (onLogout) {
+      onLogout();
+    }
+    navigate('/login');
   };
 
   return (
@@ -64,6 +71,17 @@ const Sidebar = ({ onHomeClick, theme, setTheme }) => {
           onClick={() => setTheme && setTheme('dark')}
         >
           <Moon size={18} />
+        </div>
+      </div>
+
+      <div className="sidebar-logout">
+        <div 
+          className="sidebar-logout-btn"
+          onClick={handleLogout}
+          title="Logout"
+        >
+          <LogOut size={20} />
+          <span>Logout</span>
         </div>
       </div>
 
