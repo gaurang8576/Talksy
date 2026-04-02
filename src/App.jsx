@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import Home from './pages/Home/Home';
 import Settings from './pages/Settings/Settings';
 import Login from './pages/Auth/Login';
@@ -16,13 +16,15 @@ function ProtectedRoute({ isLoggedIn, children }) {
 
 // ── Auth Route Guard ────────────────────────────────────────
 // If already logged in and tries to visit /login or /register → automatically log out
-function AuthRoute({ isLoggedIn, onLogout, children }) {
+function AuthRoute({ isLoggedIn, children }) {
+  const navigate = useNavigate();
+
   React.useEffect(() => {
-    if (isLoggedIn && onLogout) {
-      console.log('🔄 AuthRoute detected logged-in state on auth page → logging out');
-      onLogout();
+    if (isLoggedIn) {
+      console.log('🔄 AuthRoute detected logged-in state on auth page → redirecting to /home');
+      navigate("/home");
     }
-  }, [isLoggedIn, onLogout]);
+  }, [isLoggedIn, navigate]);
 
   return children;
 }
@@ -66,6 +68,8 @@ function App() {
 
   const handleLogout = () => {
     localStorage.removeItem('talksy-auth');
+    localStorage.removeItem('talksy-token');
+    localStorage.removeItem('talksy-user');
     setIsLoggedIn(false);
   };
 
@@ -77,7 +81,7 @@ function App() {
         <Route
           path="/login"
           element={
-            <AuthRoute isLoggedIn={isLoggedIn} onLogout={handleLogout}>
+            <AuthRoute isLoggedIn={isLoggedIn}>
               <Login onLogin={handleLogin} />
             </AuthRoute>
           }
@@ -85,7 +89,7 @@ function App() {
         <Route
           path="/register"
           element={
-            <AuthRoute isLoggedIn={isLoggedIn} onLogout={handleLogout}>
+            <AuthRoute isLoggedIn={isLoggedIn}>
               <Register onLogin={handleLogin} />
             </AuthRoute>
           }

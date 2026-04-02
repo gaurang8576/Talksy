@@ -1,14 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Sun, Moon } from "lucide-react";
 import Sidebar from "../../components/layout/Sidebar/Sidebar";
 import { useTheme } from "../../context/ThemeContext";
 import "./Auth.css";
 
 export default function Login({ onLogin }) {
   const navigate = useNavigate();
-  const { theme, setTheme } = useTheme();
-  const [email, setEmail] = useState("");
+  const { theme } = useTheme();
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
   const [error, setError] = useState("");
@@ -18,7 +17,7 @@ export default function Login({ onLogin }) {
     e.preventDefault();
     setError("");
 
-    if (!email || !password) {
+    if (!username || !password) {
       setError("Please fill in all fields.");
       return;
     }
@@ -28,28 +27,27 @@ export default function Login({ onLogin }) {
     try {
       const response = await fetch("https://api.freeprojectapi.com/api/BusBooking/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userName: username, password }),
       });
 
       const data = await response.json();
 
-      if (!response.ok) {
-        setError(data?.message || data?.title || "Invalid email or password.");
+      // ✅ Fix 1: API returns HTTP 200 even on failure, so also check data.result
+      if (!response.ok || data.result === false) {
+        setError(data?.message || "Invalid username or password.");
         setLoading(false);
         return;
       }
 
-      if (data?.token) {
-        localStorage.setItem("talksy-token", data.token);
+      // ✅ Fix 2: API nests the user/token inside data.data, not at the top level
+      const payload = data?.data;
+
+      if (payload?.token) {
+        localStorage.setItem("talksy-token", payload.token);
       }
-      if (data?.user || data?.data) {
-        localStorage.setItem("talksy-user", JSON.stringify(data?.user || data?.data));
+      if (payload) {
+        localStorage.setItem("talksy-user", JSON.stringify(payload));
       }
 
       onLogin();
@@ -64,40 +62,25 @@ export default function Login({ onLogin }) {
   };
 
   return (
-    // ✅ data-theme on the root element so Auth.css can scope all children
     <div className="auth-page" data-theme={theme}>
       <Sidebar isAuth={true} />
 
       <main className="auth-main">
-        <nav className="auth-nav">
-          <button 
-            className="theme-toggle" 
-            onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-            aria-label="Toggle theme"
-          >
-            {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
-          </button>
-        </nav>
-
         <div className="auth-content">
           <div className="auth-header">
             <h1>Login</h1>
             <p className="auth-subtitle">THE FOCUSED OBSERVER</p>
           </div>
 
-          {/*
-            ✅ No data-theme here — it inherits from .auth-page above.
-            ✅ Removed the bogus <sidebar-theme-toggle> element.
-          */}
           <div className="auth-card">
             <form onSubmit={handleLogin} noValidate>
               <div className="form-group">
-                <label>EMAIL ADDRESS</label>
+                <label>USERNAME</label>
                 <input
                   type="email"
                   placeholder="name@domain.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                   autoComplete="email"
                 />
               </div>
