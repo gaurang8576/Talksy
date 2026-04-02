@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Sun, Moon } from "lucide-react";
 import Sidebar from "../../components/layout/Sidebar/Sidebar";
+import { useTheme } from "../../context/ThemeContext";
 import "./Auth.css";
 
 export default function Register({ onLogin }) {
   const navigate = useNavigate();
-  // ... state remains same ...
+  const { theme, setTheme } = useTheme(); // ✅ consume theme from context
   const [form, setForm] = useState({
     fullName: "",
     email: "",
@@ -61,22 +63,18 @@ export default function Register({ onLogin }) {
       const data = await response.json();
 
       if (!response.ok) {
-        // API returned error status (400, 409 conflict, etc.)
         setError(data?.message || data?.title || "Registration failed. Please try again.");
         setLoading(false);
         return;
       }
 
-      // ── Success ──
       setSuccess("Account created! Redirecting to login...");
 
-      // Save token/user if API returns them on register
       if (data?.token) {
         localStorage.setItem("talksy-token", data.token);
-        onLogin();       // auto-login if token is returned
+        onLogin();
         setTimeout(() => navigate("/home"), 1000);
       } else {
-        // No token returned — redirect to login manually
         setTimeout(() => navigate("/login"), 1500);
       }
 
@@ -89,10 +87,20 @@ export default function Register({ onLogin }) {
   };
 
   return (
-    <div className="auth-page">
+    // ✅ data-theme on the root element so Auth.css can scope all children
+    <div className="auth-page" data-theme={theme}>
       <Sidebar isAuth={true} />
-      {/* Main */}
+
       <main className="auth-main">
+        <nav className="auth-nav">
+          <button 
+            className="theme-toggle" 
+            onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+            aria-label="Toggle theme"
+          >
+            {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
+          </button>
+        </nav>
 
         <div className="auth-content">
           <div className="auth-header">
@@ -100,6 +108,7 @@ export default function Register({ onLogin }) {
             <p className="auth-subtitle">Enter the focused workspace of Obsidian Flow.</p>
           </div>
 
+          {/* ✅ No data-theme here — inherits from .auth-page above */}
           <div className="auth-card">
             <form onSubmit={handleRegister} noValidate>
               <div className="form-group">

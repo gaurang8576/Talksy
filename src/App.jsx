@@ -15,11 +15,15 @@ function ProtectedRoute({ isLoggedIn, children }) {
 }
 
 // ── Auth Route Guard ────────────────────────────────────────
-// If already logged in and tries to visit /login or /register → redirect to home
-function AuthRoute({ isLoggedIn, children }) {
-  if (isLoggedIn) {
-    return <Navigate to="/home" replace />;
-  }
+// If already logged in and tries to visit /login or /register → automatically log out
+function AuthRoute({ isLoggedIn, onLogout, children }) {
+  React.useEffect(() => {
+    if (isLoggedIn && onLogout) {
+      console.log('🔄 AuthRoute detected logged-in state on auth page → logging out');
+      onLogout();
+    }
+  }, [isLoggedIn, onLogout]);
+
   return children;
 }
 
@@ -73,7 +77,7 @@ function App() {
         <Route
           path="/login"
           element={
-            <AuthRoute isLoggedIn={isLoggedIn}>
+            <AuthRoute isLoggedIn={isLoggedIn} onLogout={handleLogout}>
               <Login onLogin={handleLogin} />
             </AuthRoute>
           }
@@ -81,7 +85,7 @@ function App() {
         <Route
           path="/register"
           element={
-            <AuthRoute isLoggedIn={isLoggedIn}>
+            <AuthRoute isLoggedIn={isLoggedIn} onLogout={handleLogout}>
               <Register onLogin={handleLogin} />
             </AuthRoute>
           }
