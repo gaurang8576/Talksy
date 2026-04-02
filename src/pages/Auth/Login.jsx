@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Sun, Moon } from "lucide-react";
 import Sidebar from "../../components/layout/Sidebar/Sidebar";
+import { useTheme } from "../../context/ThemeContext";
 import "./Auth.css";
 
 export default function Login({ onLogin }) {
   const navigate = useNavigate();
+  const { theme, setTheme } = useTheme();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
@@ -37,14 +40,11 @@ export default function Login({ onLogin }) {
       const data = await response.json();
 
       if (!response.ok) {
-        // API returned error status (400, 401, etc.)
         setError(data?.message || data?.title || "Invalid email or password.");
         setLoading(false);
         return;
       }
 
-      // ── Success ──
-      // Save user data / token if returned
       if (data?.token) {
         localStorage.setItem("talksy-token", data.token);
       }
@@ -52,8 +52,8 @@ export default function Login({ onLogin }) {
         localStorage.setItem("talksy-user", JSON.stringify(data?.user || data?.data));
       }
 
-      onLogin();        // update App.jsx auth state
-      navigate("/home");    // go to Home
+      onLogin();
+      navigate("/home");
 
     } catch (err) {
       console.error("Login error:", err);
@@ -64,10 +64,20 @@ export default function Login({ onLogin }) {
   };
 
   return (
-    <div className="auth-page">
+    // ✅ data-theme on the root element so Auth.css can scope all children
+    <div className="auth-page" data-theme={theme}>
       <Sidebar isAuth={true} />
-      {/* Main */}
+
       <main className="auth-main">
+        <nav className="auth-nav">
+          <button 
+            className="theme-toggle" 
+            onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+            aria-label="Toggle theme"
+          >
+            {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
+          </button>
+        </nav>
 
         <div className="auth-content">
           <div className="auth-header">
@@ -75,6 +85,10 @@ export default function Login({ onLogin }) {
             <p className="auth-subtitle">THE FOCUSED OBSERVER</p>
           </div>
 
+          {/*
+            ✅ No data-theme here — it inherits from .auth-page above.
+            ✅ Removed the bogus <sidebar-theme-toggle> element.
+          */}
           <div className="auth-card">
             <form onSubmit={handleLogin} noValidate>
               <div className="form-group">

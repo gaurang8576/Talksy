@@ -72,7 +72,7 @@ const Sidebar = ({ onHomeClick, onLogout, isAuth = false }) => {
         </>
       )}
 
-      <div className="sidebar-theme-toggle">
+      <div className="sidebar-theme-toggle" style={{ backgroundColor: theme === 'light' ? 'rgba(0,0,0,0.05)' : '#1A1A1A' }}>
         <div
           className={`theme-btn ${theme === 'light' ? 'active' : ''}`}
           onClick={() => setTheme('light')}
