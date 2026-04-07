@@ -1,49 +1,47 @@
-const express = require("express");
-const cors = require("cors");
-import user from "./models/user.js";
-require("dotenv").config();
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import connectDB from "./config/db.js";
+import { listUsers } from "./services/userService.js";
+import authRoutes from "./routes/authRoutes.js";
+import chatRoutes from "./routes/chatRoutes.js";
 
-const usersData = [
-    { name: 'mamta', age: 21, email: 'mamta123@gmail.com' },
-    { name: 'riya', age: 22, email: 'riya123@gmail.com' },
-    { name: 'rahul', age: 23, email: 'rahul123@gmail.com' },
-    { name: 'gaurang', age: 27, email: 'gaurang123@gmail.com' }
-];
-
-const connectDB = require("./config/db");
+dotenv.config();
 
 const app = express();
 
-// middleware
 app.use(cors());
 app.use(express.json());
 
-// DB connection
-connectDB();
+await connectDB();
 
-// routes
-const authRoutes = require("./routes/authRoutes");
 app.use("/api/auth", authRoutes);
+app.use("/api/chats", chatRoutes);
 
-// test route
-app.get("/", (req, res) => {
-  res.json(usersData);
+app.get("/api/health", (req, res) => {
+  res.json({ status: "ok" });
 });
 
+app.get("/", async (_req, res) => {
+  try {
+    const users = await listUsers();
 
-//post route to add new user
-app.post("/add-user", (req, res) => {
-  const newUser = req.body;
-
-  usersData.push(newUser);
-
-  res.json({
-    message: "User added successfully ✅",
-    data: usersData
-  });
+    res.json({
+      name: "Talksy API",
+      status: "running",
+      collection: "users",
+      count: users.length,
+      users,
+    });
+  } catch (error) {
+    res.status(500).json({
+      name: "Talksy API",
+      status: "error",
+      message: error.message,
+    });
+  }
 });
 
-// server start
 const PORT = process.env.PORT || 5001;
 
 app.listen(PORT, () => {
