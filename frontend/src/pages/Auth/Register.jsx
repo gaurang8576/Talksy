@@ -7,6 +7,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
 export default function Register({ onLogin }) {
   const navigate = useNavigate();
+  // ... state remains same ...
   const [form, setForm] = useState({
     fullName: "",
     email: "",
@@ -58,6 +59,9 @@ export default function Register({ onLogin }) {
           name: form.fullName,
           email: form.email,
           password: form.password,
+          mobileNo: "0000000000",
+          role: "User",
+          projectName: "Talksy",
         }),
       });
 

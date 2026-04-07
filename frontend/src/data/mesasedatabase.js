@@ -2,7 +2,7 @@ export const messageDatabase = {
   'Darshan Zalavadiya': [
     { id: 1, text: 'Hello, Darshan', isOwn: true },
     { id: 2, text: 'Hello', isOwn: false },
-    { id: 3, text: 'How are you', isOwn: true },
+    { id: 3, text: 'How are you', isOwn: true },   
     { id: 4, text: 'I am good', isOwn: false },
     { id: 5, text: 'What about You', isOwn: false },
     { id: 6, text: 'Same for this side', isOwn: true },
